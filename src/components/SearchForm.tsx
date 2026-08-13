@@ -1,6 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
 import { type z } from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -30,7 +29,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export function SearchForm({ initialData }: { initialData?: Partial<SearchQuery> } = {}) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.input<typeof SearchQuerySchema>, any, SearchQuery>({
     resolver: zodResolver(SearchQuerySchema),
@@ -45,20 +43,20 @@ export function SearchForm({ initialData }: { initialData?: Partial<SearchQuery>
   });
 
   function onSubmit(data: SearchQuery) {
-    startTransition(() => {
-      const params = new URLSearchParams();
-      params.set("from", data.from);
-      params.set("to", data.to);
-      params.set("seats", data.seats.toString());
-      params.set("ac", data.ac.toString());
-      params.set("withDriver", data.withDriver.toString());
-      params.set("date", data.date.toISOString());
-      
-      router.push(`/search?${params.toString()}`);
-    });
+    const params = new URLSearchParams();
+    params.set("from", data.from);
+    params.set("to", data.to);
+    params.set("seats", data.seats.toString());
+    params.set("ac", data.ac.toString());
+    params.set("withDriver", data.withDriver.toString());
+    params.set("date", data.date.toISOString());
+    
+    params.set("_t", Date.now().toString());
+    
+    router.push(`/search?${params.toString()}`);
   }
 
-  const isLoading = isPending || form.formState.isSubmitting;
+  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
