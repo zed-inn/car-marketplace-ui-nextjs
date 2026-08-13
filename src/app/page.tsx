@@ -1,4 +1,5 @@
 import { SearchForm } from "@/components/SearchForm";
+import { SuggestionBox } from "@/components/SuggestionBox";
 
 export default function HomePage() {
   return (
@@ -17,8 +18,8 @@ export default function HomePage() {
           <SearchForm />
         </div>
 
-        <div className="w-full bg-secondary/30 p-4 sm:p-6 rounded-lg border shadow-sm h-48 flex items-center justify-center text-muted-foreground text-sm">
-          suggestion box placeholder
+        <div className="w-full">
+          <SuggestionBox />
         </div>
       </section>
     </main>

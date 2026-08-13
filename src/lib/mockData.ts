@@ -1,4 +1,4 @@
-import { SearchResultItem } from "@/types/models";
+import { SearchResultItem, TravelSuggestion } from "@/types/models";
 import { v7 as uuidv7 } from "uuid";
 
 export const MOCK_SEARCH_RESULTS: SearchResultItem[] = [
@@ -92,4 +92,25 @@ export const MOCK_SEARCH_RESULTS: SearchResultItem[] = [
       }
     }
   }
+];
+
+export const MOCK_SUGGESTIONS: TravelSuggestion[] = [
+  {
+    fromLocation: "Downtown City Center",
+    toLocation: "International Airport",
+    priceEstimate: 45.0,
+    cars: [MOCK_SEARCH_RESULTS[0].car, MOCK_SEARCH_RESULTS[1].car],
+  },
+  {
+    fromLocation: "Central Station",
+    toLocation: "Tech Park",
+    priceEstimate: 30.0,
+    cars: [MOCK_SEARCH_RESULTS[2].car],
+  },
+  {
+    fromLocation: "University Campus",
+    toLocation: "Shopping Mall",
+    priceEstimate: 20.0,
+    cars: [MOCK_SEARCH_RESULTS[0].car],
+  },
 ];
