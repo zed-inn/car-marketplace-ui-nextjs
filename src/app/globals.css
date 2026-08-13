@@ -36,5 +36,6 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    scrollbar-gutter: stable;
   }
 }
