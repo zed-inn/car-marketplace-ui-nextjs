@@ -1,5 +1,6 @@
 import { Car, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { SearchForm } from "@/components/SearchForm";
 import { MOCK_SEARCH_RESULTS } from "@/lib/mockData";
 import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
@@ -91,9 +92,12 @@ export default async function SearchResultsPage({
                 <div className="text-2xl font-bold text-primary">
                   ${result.journeyPrice.toFixed(2)}
                 </div>
-                <Button className="mt-0 sm:mt-2 w-full sm:w-auto">
+                <Link 
+                  href={`/${result.car.agency.slug}?carId=${result.car.id}`}
+                  className={buttonVariants({ className: "mt-0 sm:mt-2 w-full sm:w-auto" })}
+                >
                   Contact Agency
-                </Button>
+                </Link>
               </div>
             </article>
           ))}
