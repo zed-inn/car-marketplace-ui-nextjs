@@ -28,19 +28,19 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export function SearchForm() {
+export function SearchForm({ initialData }: { initialData?: Partial<SearchQuery> } = {}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.input<typeof SearchQuerySchema>, any, SearchQuery>({
     resolver: zodResolver(SearchQuerySchema),
     defaultValues: {
-      from: "",
-      to: "",
-      seats: 1,
-      ac: true,
-      withDriver: true,
-      date: new Date(),
+      from: initialData?.from || "",
+      to: initialData?.to || "",
+      seats: initialData?.seats || 1,
+      ac: initialData?.ac ?? true,
+      withDriver: initialData?.withDriver ?? true,
+      date: initialData?.date || new Date(),
     },
   });
 
