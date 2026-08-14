@@ -1,12 +1,21 @@
 import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
-import { MOCK_SUGGESTIONS } from "@/lib/mockData";
 import { buttonVariants } from "@/components/ui/button";
+import { env } from "@/lib/env";
 import { z } from "zod";
 import { TravelSuggestionSchema } from "@/types/models";
 
-export function SuggestionBox() {
-  const suggestions = z.array(TravelSuggestionSchema).parse(MOCK_SUGGESTIONS);
+export async function SuggestionBox() {
+  const res = await fetch(`${env.APP_URL}/api/suggestions`, {
+    cache: "no-store",
+  });
+  
+  if (!res.ok) {
+    throw new Error("Failed to fetch suggestions");
+  }
+  
+  const data = await res.json();
+  const suggestions = z.array(TravelSuggestionSchema).parse(data);
 
   return (
     <section className="w-full flex flex-col gap-4">

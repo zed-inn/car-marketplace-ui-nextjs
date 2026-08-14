@@ -5,14 +5,21 @@ import { buttonVariants } from "@/components/ui/button";
 import { SearchForm } from "@/components/SearchForm";
 import { SearchSkeleton } from "@/components/SearchSkeleton";
 import { SearchLoadedNotifier } from "@/components/SearchLoadedNotifier";
-import { MOCK_SEARCH_RESULTS } from "@/lib/mockData";
+import { env } from "@/lib/env";
 import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
 import { z } from "zod";
 
 async function SearchResultsList() {
-  await new Promise((resolve) => setTimeout(resolve, 800));
+  const res = await fetch(`${env.APP_URL}/api/search`, {
+    cache: "no-store",
+  });
   
-  const results = z.array(SearchResultItemSchema).parse(MOCK_SEARCH_RESULTS);
+  if (!res.ok) {
+    throw new Error("Failed to fetch search results");
+  }
+  
+  const data = await res.json();
+  const results = z.array(SearchResultItemSchema).parse(data);
 
   return (
     <section className="flex flex-col gap-3">
