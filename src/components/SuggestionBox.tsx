@@ -4,10 +4,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { env } from "@/lib/env";
 import { z } from "zod";
 import { TravelSuggestionSchema } from "@/types/models";
+import { CACHE_REVALIDATE_SECONDS_DEFAULT } from "@/lib/constants";
 
 export async function SuggestionBox() {
   const res = await fetch(`${env.APP_URL}/api/suggestions`, {
-    next: { revalidate: 60 },
+    next: { revalidate: CACHE_REVALIDATE_SECONDS_DEFAULT },
   });
   
   if (!res.ok) {

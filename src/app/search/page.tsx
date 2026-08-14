@@ -8,13 +8,14 @@ import { SearchLoadedNotifier } from "@/components/SearchLoadedNotifier";
 import { env } from "@/lib/env";
 import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
 import { z } from "zod";
+import { CACHE_REVALIDATE_SECONDS_DEFAULT, LABOR_ILLUSION_DELAY_MS } from "@/lib/constants";
 
 async function SearchResultsList({ queryParams }: { queryParams: string }) {
   const [res] = await Promise.all([
     fetch(`${env.APP_URL}/api/search?${queryParams}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: CACHE_REVALIDATE_SECONDS_DEFAULT },
     }),
-    new Promise((resolve) => setTimeout(resolve, 400)),
+    new Promise((resolve) => setTimeout(resolve, LABOR_ILLUSION_DELAY_MS)),
   ]);
   
   if (!res.ok) {

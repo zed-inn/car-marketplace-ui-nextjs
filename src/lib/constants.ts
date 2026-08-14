@@ -1,0 +1,3 @@
+export const CACHE_REVALIDATE_SECONDS_DEFAULT = 60;
+
+export const LABOR_ILLUSION_DELAY_MS = 400;
