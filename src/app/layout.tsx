@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-const inter = Inter({ 
+const roboto = Roboto({ 
   subsets: ["latin"], 
-  variable: "--font-inter" 
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
-  title: "MyRide | Premium Vehicle Marketplace",
-  description: "Connect with drivers and vehicles in your location seamlessly.",
+  title: "Find Ride | Safe & Reliable Local Cabs",
+  description: "Book verified cabs and drivers instantly across India.",
 };
 
 export default function RootLayout({
@@ -20,8 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans min-h-screen bg-background antialiased flex flex-col`}>
-        {children}
+      <body className={`${roboto.variable} font-sans min-h-screen flex flex-col`}>
+        <Header />
+        <div className="flex-1 w-full relative">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

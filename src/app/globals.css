@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-roboto);
   
   --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.141 0.005 285.823);
+  --color-foreground: oklch(0.233 0.015 255.589);
   
-  --color-primary: oklch(0.45 0.15 260);
+  --color-primary: oklch(0.609 0.126 221.723);
   --color-primary-foreground: oklch(0.98 0 0);
   
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.141 0.005 285.823);
+  --color-card: oklch(0.985 0.002 247.858);
+  --color-card-foreground: oklch(0.233 0.015 255.589);
   --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.141 0.005 285.823);
+  --color-popover-foreground: oklch(0.233 0.015 255.589);
   --color-secondary: oklch(0.967 0.001 286.375);
   --color-secondary-foreground: oklch(0.21 0.006 285.885);
   --color-muted: oklch(0.967 0.001 286.375);
@@ -23,7 +23,7 @@
   --color-destructive-foreground: oklch(0.577 0.245 27.325);
   --color-border: oklch(0.92 0.004 286.32);
   --color-input: oklch(0.92 0.004 286.32);
-  --color-ring: oklch(0.871 0.006 286.286);
+  --color-ring: oklch(0.609 0.126 221.723);
   
   --radius-lg: 0.75rem;
   --radius-md: calc(var(--radius-lg) - 2px);
@@ -31,6 +31,9 @@
 }
 
 @layer base {
+  html {
+    overflow-y: scroll;
+  }
   * {
     @apply border-border;
   }

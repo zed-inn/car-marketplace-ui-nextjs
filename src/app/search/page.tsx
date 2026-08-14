@@ -1,63 +1,72 @@
 import { Suspense } from "react";
-import { Car, Users } from "lucide-react";
+import { Car, Users, Star, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { SearchForm } from "@/components/SearchForm";
 import { SearchSkeleton } from "@/components/SearchSkeleton";
+import { SearchLoadedNotifier } from "@/components/SearchLoadedNotifier";
 import { MOCK_SEARCH_RESULTS } from "@/lib/mockData";
 import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
 import { z } from "zod";
 
 async function SearchResultsList() {
-  // simulate database latency
   await new Promise((resolve) => setTimeout(resolve, 800));
   
   const results = z.array(SearchResultItemSchema).parse(MOCK_SEARCH_RESULTS);
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-3">
+      <SearchLoadedNotifier />
       {results.map((result) => (
         <article 
           key={result.car.id} 
-          className="bg-card p-4 sm:p-6 rounded-lg border shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors hover:bg-accent/10"
+          className="bg-white border rounded-xl p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-5"
         >
-          <div className="flex gap-4 items-start w-full sm:w-auto">
-            <div className="h-16 w-16 bg-muted rounded-md flex items-center justify-center shrink-0">
-              <Car className="h-8 w-8 text-muted-foreground/50" />
+          <div className="flex gap-4 items-start w-full md:w-auto">
+            <div className="h-14 w-14 md:h-16 md:w-16 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+              <Car className="h-7 w-7 md:h-8 md:w-8 text-primary" />
             </div>
             
             <div className="flex flex-col">
-              <h2 className="text-lg font-semibold">
-                {result.car.brand} {result.car.model} <span className="text-sm font-normal text-muted-foreground">({result.car.year})</span>
+              <h2 className="text-base md:text-lg font-bold text-foreground">
+                {result.car.brand} {result.car.model}
               </h2>
-              <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
-                <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {result.car.seats}</span>
-                <span>{result.car.hasAc ? "AC" : "Non-AC"}</span>
+              <div className="flex flex-wrap items-center gap-2 mt-1">
+                <span className="flex items-center gap-1 bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground"><Users className="h-3 w-3" /> {result.car.seats} Seats</span>
+                <span className="bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground">{result.car.hasAc ? "AC" : "Non-AC"}</span>
+                <span className="flex items-center gap-1 text-green-700 bg-green-50 px-2 py-0.5 rounded text-xs font-medium">
+                  <CheckCircle2 className="h-3 w-3" /> Trusted
+                </span>
               </div>
-              <div className="mt-2 flex items-center gap-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 {result.car.driver ? (
-                  <>
-                    <img src={result.car.driver.imageUrl} alt="Driver" className="h-6 w-6 rounded-full bg-secondary" />
-                    <span className="text-sm font-medium">{result.car.driver.name}</span>
-                  </>
+                  <div className="flex items-center gap-1.5">
+                    <img src={result.car.driver.imageUrl} alt="Driver" className="h-5 w-5 rounded-full object-cover border" />
+                    <span className="text-xs font-medium">{result.car.driver.name}</span>
+                  </div>
                 ) : (
-                  <span className="text-sm font-medium italic text-muted-foreground">No Driver</span>
+                  <span className="text-xs font-medium italic text-muted-foreground">Driver pending</span>
                 )}
-                <span className="text-xs text-amber-500 font-semibold ml-2">★ {result.car.agency.rating.toFixed(1)}</span>
+                <span className="flex items-center text-xs font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">
+                  <Star className="h-3 w-3 fill-amber-500 text-amber-500 mr-0.5" /> {result.car.agency.rating.toFixed(1)}
+                </span>
+                <span className="text-xs text-muted-foreground">({result.car.agency.name})</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-4 sm:mt-0 border-t sm:border-t-0 pt-4 sm:pt-0">
-            <div className="text-2xl font-bold text-primary">
-              ${result.journeyPrice.toFixed(2)}
+          <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0">
+            <div className="flex flex-col md:items-end">
+              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Total Fare</span>
+              <div className="text-xl font-bold text-foreground">
+                ₹{(result.journeyPrice * 80).toFixed(0)}
+              </div>
             </div>
             <Link 
               href={`/${result.car.agency.slug}?carId=${result.car.id}`}
-              className={buttonVariants({ className: "mt-0 sm:mt-2 w-full sm:w-auto" })}
+              className={buttonVariants({ className: "md:mt-2 bg-orange-600 hover:bg-orange-700 text-white font-bold px-5 shadow-sm" })}
             >
-              Contact Agency
+              Book Now
             </Link>
           </div>
         </article>
@@ -97,18 +106,15 @@ export default async function SearchResultsPage({
   const queryKey = JSON.stringify(rawParams);
 
   return (
-    <main className="flex flex-col items-center min-h-screen px-4 py-8 md:p-12 bg-muted/20">
-      <div className="w-full max-w-5xl flex flex-col gap-8">
-        
-        <section>
-          <SearchForm initialData={searchData} />
+    <main className="flex flex-col items-center min-h-screen py-8 px-4 md:px-8">
+      <div className="w-full max-w-4xl flex flex-col gap-6">
+        <section className="bg-white border rounded-xl shadow-sm p-4 md:p-6">
+          <SearchForm initialData={searchData} isSearchPage={true} />
         </section>
 
-        <header>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-primary">
-            Available Rides
-          </h1>
-        </header>
+        <h1 className="text-xl font-bold text-foreground mt-2">
+          Available Cabs
+        </h1>
 
         <Suspense key={queryKey} fallback={<SearchSkeleton />}>
           <SearchResultsList />
@@ -117,4 +123,3 @@ export default async function SearchResultsPage({
     </main>
   );
 }
-

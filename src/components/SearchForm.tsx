@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { type z } from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { searchState } from "@/lib/searchState";
 import { format } from "date-fns";
-import { CalendarIcon, MapPin, Users, Loader2 } from "lucide-react";
+import { CalendarIcon, MapPin, Users, Loader2, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { SearchQuerySchema, type SearchQuery } from "@/types/models";
@@ -27,8 +29,19 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export function SearchForm({ initialData }: { initialData?: Partial<SearchQuery> } = {}) {
+export function SearchForm({ initialData, isSearchPage }: { initialData?: Partial<SearchQuery>, isSearchPage?: boolean } = {}) {
   const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(!!isSearchPage);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  useEffect(() => {
+    if (searchState.isLoaded) {
+      setIsNavigating(false);
+    }
+    const handleLoaded = () => setIsNavigating(false);
+    window.addEventListener("search-loaded", handleLoaded);
+    return () => window.removeEventListener("search-loaded", handleLoaded);
+  }, []);
 
   const form = useForm<z.input<typeof SearchQuerySchema>, any, SearchQuery>({
     resolver: zodResolver(SearchQuerySchema),
@@ -53,148 +66,171 @@ export function SearchForm({ initialData }: { initialData?: Partial<SearchQuery>
     
     params.set("_t", Date.now().toString());
     
+    setIsNavigating(true);
     router.push(`/search?${params.toString()}`);
   }
 
-  const isLoading = form.formState.isSubmitting;
+  const isLoading = form.formState.isSubmitting || isNavigating;
 
   return (
     <Form {...form}>
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-x-4 gap-y-8 pt-4 px-4 sm:pt-6 sm:px-6 pb-8 sm:pb-8 items-end bg-card rounded-lg shadow-md border"
+        className="w-full flex flex-col gap-0"
       >
-        <FormField
-          control={form.control}
-          name="from"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-2">
-              <FormLabel>from</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="pickup location" className="pl-9" {...field} />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="to"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-2">
-              <FormLabel>to</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="drop-off location" className="pl-9" {...field} />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-2">
-              <FormLabel>date</FormLabel>
-              <Popover>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-0">
+          <FormField
+            control={form.control}
+            name="from"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wide">From</FormLabel>
                 <FormControl>
-                  <PopoverTrigger
-                    type="button"
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "w-full pl-3 text-left font-normal",
-                      !field.value && "text-muted-foreground"
-                    )}
-                  >
-                    {field.value ? format(field.value, "PPP") : <span>pick a date</span>}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </PopoverTrigger>
+                  <div className="relative group">
+                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Input placeholder="Pickup city" className="pl-10 h-12 rounded-lg" {...field} />
+                  </div>
                 </FormControl>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="seats"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-1">
-              <FormLabel>seats</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input 
-                    type="number" 
-                    min={1} 
-                    className="pl-9" 
-                    {...field} 
-                    onChange={e => field.onChange(parseInt(e.target.value) || 0)} 
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="to"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wide">To</FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Input placeholder="Drop-off city" className="pl-10 h-12 rounded-lg" {...field} />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <FormField
-          control={form.control}
-          name="ac"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-1 flex flex-row items-center space-x-3 space-y-0 p-4 border rounded-md h-10">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel className="font-normal cursor-pointer">
-                ac
-              </FormLabel>
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-0 items-start">
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Date</FormLabel>
+                <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                  <FormControl>
+                    <PopoverTrigger
+                      type="button"
+                      className={cn(
+                        buttonVariants({ variant: "outline" }),
+                        "w-full pl-3.5 text-left font-normal h-12 rounded-lg justify-start",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                      {field.value ? format(field.value, "MMM d, yyyy") : <span>Pick date</span>}
+                    </PopoverTrigger>
+                  </FormControl>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setIsCalendarOpen(false);
+                      }}
+                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="withDriver"
-          render={({ field }) => (
-            <FormItem className="lg:col-span-2 flex flex-row items-center space-x-3 space-y-0 p-4 border rounded-md h-10">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel className="font-normal cursor-pointer">
-                driver needed
-              </FormLabel>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="seats"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Seats</FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Input 
+                      type="number" 
+                      min={1} 
+                      className="pl-10 h-12 rounded-lg" 
+                      {...field} 
+                      onChange={e => field.onChange(parseInt(e.target.value) || 0)} 
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button type="submit" disabled={isLoading} className="md:col-span-2 lg:col-span-2 h-10">
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          search rides
+          <FormField
+            control={form.control}
+            name="ac"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-transparent uppercase tracking-wide select-none">AC</FormLabel>
+                <FormControl>
+                  <label 
+                    className="flex flex-row items-center justify-center gap-2.5 border rounded-lg h-12 hover:bg-accent/50 cursor-pointer transition-colors" 
+                  >
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <span className="text-sm font-medium select-none text-foreground">AC</span>
+                  </label>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="withDriver"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-bold text-transparent uppercase tracking-wide select-none">Driver</FormLabel>
+                <FormControl>
+                  <label 
+                    className="flex flex-row items-center justify-center gap-2.5 border rounded-lg h-12 hover:bg-accent/50 cursor-pointer transition-colors" 
+                  >
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <span className="text-sm font-medium select-none text-foreground">Driver</span>
+                  </label>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button 
+          type="submit" 
+          disabled={isLoading} 
+          className="w-full h-12 mt-2 bg-orange-600 hover:bg-orange-700 text-white font-bold text-base rounded-lg shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Finding cabs...
+            </>
+          ) : (
+            <>
+              <Search className="h-4 w-4" />
+              Search Cabs
+            </>
+          )}
         </Button>
       </form>
     </Form>
