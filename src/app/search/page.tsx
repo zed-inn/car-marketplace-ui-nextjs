@@ -10,9 +10,12 @@ import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/t
 import { z } from "zod";
 
 async function SearchResultsList({ queryParams }: { queryParams: string }) {
-  const res = await fetch(`${env.APP_URL}/api/search?${queryParams}`, {
-    next: { revalidate: 60 },
-  });
+  const [res] = await Promise.all([
+    fetch(`${env.APP_URL}/api/search?${queryParams}`, {
+      next: { revalidate: 60 },
+    }),
+    new Promise((resolve) => setTimeout(resolve, 400)),
+  ]);
   
   if (!res.ok) {
     throw new Error("Failed to fetch search results");
