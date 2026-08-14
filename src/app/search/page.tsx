@@ -9,9 +9,9 @@ import { env } from "@/lib/env";
 import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
 import { z } from "zod";
 
-async function SearchResultsList() {
-  const res = await fetch(`${env.APP_URL}/api/search`, {
-    cache: "no-store",
+async function SearchResultsList({ queryParams }: { queryParams: string }) {
+  const res = await fetch(`${env.APP_URL}/api/search?${queryParams}`, {
+    next: { revalidate: 60 },
   });
   
   if (!res.ok) {
@@ -112,6 +112,14 @@ export default async function SearchResultsPage({
   const searchData = parsedParams.success ? parsedParams.data : fallbackData;
   const queryKey = JSON.stringify(rawParams);
 
+  const queryParams = new URLSearchParams({
+    from: searchData.from,
+    to: searchData.to,
+    seats: searchData.seats.toString(),
+    ac: searchData.ac.toString(),
+    withDriver: searchData.withDriver.toString(),
+  }).toString();
+
   return (
     <main className="flex flex-col items-center min-h-screen py-8 px-4 md:px-8">
       <div className="w-full max-w-4xl flex flex-col gap-6">
@@ -124,7 +132,7 @@ export default async function SearchResultsPage({
         </h1>
 
         <Suspense key={queryKey} fallback={<SearchSkeleton />}>
-          <SearchResultsList />
+          <SearchResultsList queryParams={queryParams} />
         </Suspense>
       </div>
     </main>

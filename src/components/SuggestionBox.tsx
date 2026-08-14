@@ -7,7 +7,7 @@ import { TravelSuggestionSchema } from "@/types/models";
 
 export async function SuggestionBox() {
   const res = await fetch(`${env.APP_URL}/api/suggestions`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
   
   if (!res.ok) {
