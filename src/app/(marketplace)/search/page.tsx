@@ -35,8 +35,8 @@ async function SearchResultsList({ queryParams }: { queryParams: string }) {
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <span className="flex items-center gap-1 bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground"><Users className="h-3 w-3" /> {result.car.seats} Seats</span>
                 <span className="bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground">{result.car.hasAc ? "AC" : "Non-AC"}</span>
-                <span className="flex items-center gap-1 text-green-700 bg-green-50 px-2 py-0.5 rounded text-xs font-medium">
-                  <CheckCircle2 className="h-3 w-3" /> Trusted
+                <span className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs font-medium">
+                  <CheckCircle2 className="h-3 w-3" /> Commercial Cab
                 </span>
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">

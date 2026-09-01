@@ -39,7 +39,10 @@ export default async function AgencyPage({
             )}
             <div className="min-w-0">
               <h1 className="font-bold text-sm md:text-base leading-tight truncate text-slate-900">{agency.name}</h1>
-              <span className="text-[11px] text-slate-500 font-medium block">Verified Partner</span>
+              <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 font-semibold mt-0.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Active Fleet</span>
+              </div>
             </div>
           </div>
 
@@ -85,7 +88,7 @@ export default async function AgencyPage({
                   <Car className="h-3.5 w-3.5 text-slate-500" /> {car.hasAc ? "AC Cab" : "Non-AC"}
                 </span>
                 <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md flex items-center gap-1">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" /> Driver Included
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" /> Commercial Driver
                 </span>
               </div>
 
