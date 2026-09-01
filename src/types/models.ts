@@ -13,6 +13,14 @@ export const SearchQuerySchema = z.object({
   withDriver: z.boolean("Driver preference is required").default(true),
 });
 
+export const ReviewSchema = z.object({
+  id: z.string(),
+  authorName: z.string(),
+  rating: z.number().min(1).max(5),
+  date: z.string(),
+  comment: z.string(),
+});
+
 export const AgencySchema = z
   .object({
     name: z
@@ -29,6 +37,18 @@ export const AgencySchema = z
     reviewsCount: z
       .int("Reviews count must be an integer")
       .min(0, "Reviews count cannot be negative"),
+    phoneNumber: z.string().default("+91 9876543210"),
+    aboutCompany: z.string().default("A trusted travel agency providing top-notch cabs."),
+    companyWebsite: z.string().url().optional(),
+    instagramProfile: z.string().url().optional(),
+    logoImageUrl: z.string().url().optional(),
+    reviews: z.array(ReviewSchema).optional(),
+    ownerName: z.string().optional(),
+    isIndividualDriver: z.boolean().default(false),
+    yearsInBusiness: z.number().optional(),
+    location: z.string().optional(),
+    whatsappNumber: z.string().optional(),
+    services: z.array(z.string()).optional(),
   })
   .refine((data) => data.reviewsCount > 0 || data.rating === 0, {
     message: "Rating must be 0 if there are no reviews",
