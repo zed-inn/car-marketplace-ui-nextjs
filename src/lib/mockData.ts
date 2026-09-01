@@ -4,8 +4,6 @@ import { v7 as uuidv7 } from "uuid";
 const AGENCY_1 = {
   name: "Premium Rides & Travels",
   slug: "premium-rides-1",
-  rating: 4.8,
-  reviewsCount: 120,
   phoneNumber: "+91 9876543210",
   aboutCompany: "Leading travel agency operating outstation tours, airport drops, and commercial fleets across India.",
   ownerName: "Rajesh Sharma",
@@ -15,8 +13,6 @@ const AGENCY_1 = {
 const AGENCY_2 = {
   name: "FastTrack Outstation Cabs",
   slug: "premium-rides-2",
-  rating: 4.9,
-  reviewsCount: 135,
   phoneNumber: "+91 9876543211",
   aboutCompany: "FastTrack Cabs is your trusted partner for comfortable outstation trips and intercity transfers.",
   ownerName: "Vikram Malhotra",
@@ -25,8 +21,6 @@ const AGENCY_2 = {
 const AGENCY_3 = {
   name: "Ramesh Kumar Cabs",
   slug: "premium-rides-3",
-  rating: 5.0,
-  reviewsCount: 150,
   phoneNumber: "+91 9876543212",
   aboutCompany: "Independent commercial driver with 10+ years of safe driving experience across national highways.",
   ownerName: "Ramesh Kumar",

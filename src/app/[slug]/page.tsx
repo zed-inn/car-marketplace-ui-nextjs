@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Star, Car, Users, Info, ShieldCheck, CheckCircle2, ArrowRight, Globe } from "lucide-react";
+import { Car, Users, Info, CheckCircle2, ArrowRight, Globe } from "lucide-react";
 import Link from "next/link";
 import { getAgencyData } from "@/lib/services/dataService";
 import { CallAgencyButton } from "@/components/CallAgencyButton";
@@ -39,11 +39,7 @@ export default async function AgencyPage({
             )}
             <div className="min-w-0">
               <h1 className="font-bold text-sm md:text-base leading-tight truncate text-slate-900">{agency.name}</h1>
-              <div className="flex items-center text-[11px] text-slate-500 gap-1">
-                <Star className="h-3 w-3 fill-amber-500 text-amber-500 shrink-0" />
-                <span className="font-semibold text-slate-700">{agency.rating.toFixed(1)}</span>
-                <span>({agency.reviewsCount} reviews)</span>
-              </div>
+              <span className="text-[11px] text-slate-500 font-medium block">Verified Partner</span>
             </div>
           </div>
 

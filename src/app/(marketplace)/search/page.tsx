@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Car, Users, Star, CheckCircle2 } from "lucide-react";
+import { Car, Users, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { SearchForm } from "@/components/SearchForm";
@@ -48,10 +48,7 @@ async function SearchResultsList({ queryParams }: { queryParams: string }) {
                 ) : (
                   <span className="text-xs font-medium italic text-muted-foreground">Driver pending</span>
                 )}
-                <span className="flex items-center text-xs font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">
-                  <Star className="h-3 w-3 fill-amber-500 text-amber-500 mr-0.5" /> {result.car.agency.rating.toFixed(1)}
-                </span>
-                <span className="text-xs text-muted-foreground">({result.car.agency.name})</span>
+                <span className="text-xs font-semibold text-muted-foreground">({result.car.agency.name})</span>
               </div>
             </div>
           </div>

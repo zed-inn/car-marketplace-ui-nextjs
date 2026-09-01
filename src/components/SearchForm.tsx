@@ -76,14 +76,14 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-1.5 sm:gap-3"
+        className="w-full flex flex-col gap-2 sm:gap-3"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
           <FormField
             control={form.control}
             name="from"
             render={({ field }) => (
-              <FormItem className="space-y-0.5">
+              <FormItem className="space-y-1">
                 <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">From</FormLabel>
                 <FormControl>
                   <div className="relative group">
@@ -91,7 +91,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                     <Input placeholder="Pickup city" className="pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg" {...field} />
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -100,7 +100,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
             control={form.control}
             name="to"
             render={({ field }) => (
-              <FormItem className="space-y-0.5">
+              <FormItem className="space-y-1">
                 <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">To</FormLabel>
                 <FormControl>
                   <div className="relative group">
@@ -108,18 +108,18 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                     <Input placeholder="Drop-off city" className="pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg" {...field} />
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-3 items-end">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 items-end">
           <FormField
             control={form.control}
             name="date"
             render={({ field }) => (
-              <FormItem className="space-y-0.5 col-span-2 sm:col-span-1">
+              <FormItem className="space-y-1 col-span-2 sm:col-span-1">
                 <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Date</FormLabel>
                 <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                   <FormControl>
@@ -147,7 +147,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage />
+                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -156,7 +156,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
             control={form.control}
             name="seats"
             render={({ field }) => (
-              <FormItem className="space-y-0.5">
+              <FormItem className="space-y-1">
                 <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Seats</FormLabel>
                 <FormControl>
                   <div className="relative group">
@@ -170,7 +170,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                     />
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -180,7 +180,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
               control={form.control}
               name="ac"
               render={({ field }) => (
-                <FormItem className="space-y-0.5">
+                <FormItem className="space-y-1">
                   <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">AC</FormLabel>
                   <FormControl>
                     <label 
@@ -190,7 +190,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                       <span className="text-xs sm:text-sm font-semibold select-none text-foreground">AC</span>
                     </label>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
                 </FormItem>
               )}
             />
@@ -199,7 +199,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
               control={form.control}
               name="withDriver"
               render={({ field }) => (
-                <FormItem className="space-y-0.5">
+                <FormItem className="space-y-1">
                   <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Driver</FormLabel>
                   <FormControl>
                     <label 
@@ -209,7 +209,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                       <span className="text-xs sm:text-sm font-semibold select-none text-foreground">Driver</span>
                     </label>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
                 </FormItem>
               )}
             />
@@ -219,7 +219,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
         <Button 
           type="submit" 
           disabled={isLoading} 
-          className="w-full h-10 sm:h-12 mt-0.5 sm:mt-1 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-base rounded-lg shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
+          className="w-full h-10 sm:h-12 mt-1 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-base rounded-lg shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
         >
           {isLoading ? (
             <>

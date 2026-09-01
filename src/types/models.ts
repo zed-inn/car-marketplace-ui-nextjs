@@ -9,33 +9,20 @@ export const SearchQuerySchema = z.object({
   date: z.date("Date is required").default(() => new Date()),
 });
 
-export const AgencySchema = z
-  .object({
-    name: z
-      .string("Agency name is required")
-      .min(1, "Agency name cannot be empty"),
-    slug: z
-      .string("Slug is required")
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format"),
-    rating: z
-      .number("Rating must be a number")
-      .step(0.1, "Rating must have max 1 decimal place")
-      .min(0, "Rating cannot be negative")
-      .max(5, "Rating cannot exceed 5"),
-    reviewsCount: z
-      .int("Reviews count must be an integer")
-      .min(0, "Reviews count cannot be negative"),
-    phoneNumber: z.string().default("+91 9876543210"),
-    aboutCompany: z.string().default("A trusted travel agency providing top-notch cabs."),
-    ownerName: z.string().optional(),
-    companyWebsite: z.string().url().optional(),
-    instagramProfile: z.string().url().optional(),
-    logoImageUrl: z.string().url().optional(),
-  })
-  .refine((data) => data.reviewsCount > 0 || data.rating === 0, {
-    message: "Rating must be 0 if there are no reviews",
-    path: ["rating"],
-  });
+export const AgencySchema = z.object({
+  name: z
+    .string("Agency name is required")
+    .min(1, "Agency name cannot be empty"),
+  slug: z
+    .string("Slug is required")
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format"),
+  phoneNumber: z.string().default("+91 9876543210"),
+  aboutCompany: z.string().default("A trusted travel agency providing top-notch cabs."),
+  ownerName: z.string().optional(),
+  companyWebsite: z.string().url().optional(),
+  instagramProfile: z.string().url().optional(),
+  logoImageUrl: z.string().url().optional(),
+});
 
 export const DriverSchema = z.object({
   name: z
