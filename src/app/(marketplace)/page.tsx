@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="relative h-[180px] sm:h-[240px] md:h-[380px] w-full rounded-xl md:rounded-2xl overflow-hidden shadow-md">
           <Image
             src="/find_ride_hero.png"
-            alt="Intercity cab marketplace Find Ride"
+            alt="Intercity cab marketplace SaffarSathi"
             fill
             priority
             className="object-cover"

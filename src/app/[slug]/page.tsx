@@ -189,7 +189,7 @@ export default async function AgencyPage({
       {/* Minimal Footer */}
       <footer className="w-full border-t bg-white py-4 mt-auto">
         <div className="max-w-4xl mx-auto px-4 text-center text-xs text-slate-500">
-          Powered by <span className="font-bold text-slate-800">Find Ride</span>
+          Powered by <span className="font-bold text-slate-800">SaffarSathi</span>
         </div>
       </footer>
 

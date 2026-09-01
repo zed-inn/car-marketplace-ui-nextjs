@@ -9,8 +9,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Find Ride | Safe & Reliable Local Cabs",
-  description: "Book verified cabs and drivers instantly across India.",
+  title: "SaffarSathi | Local & Outstation Cab Directory",
+  description: "Book verified cabs and drivers instantly across India with SaffarSathi.",
 };
 
 export default function RootLayout({

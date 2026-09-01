@@ -3,26 +3,26 @@ import { v7 as uuidv7 } from "uuid";
 
 const AGENCY_1 = {
   name: "Premium Rides & Travels",
-  slug: "premium-rides-1",
+  slug: "premium-rides",
   phoneNumber: "+91 9876543210",
-  aboutCompany: "Leading travel agency operating outstation tours, airport drops, and commercial fleets across India.",
+  aboutCompany: "Full-service outstation and local travel operator providing sedan and SUV fleets for intercity journeys.",
   ownerName: "Rajesh Sharma",
   companyWebsite: "https://example.com",
 };
 
 const AGENCY_2 = {
   name: "FastTrack Outstation Cabs",
-  slug: "premium-rides-2",
+  slug: "fasttrack-cabs",
   phoneNumber: "+91 9876543211",
-  aboutCompany: "FastTrack Cabs is your trusted partner for comfortable outstation trips and intercity transfers.",
+  aboutCompany: "FastTrack Cabs provides outstation transfers and airport transit across major commercial corridors.",
   ownerName: "Vikram Malhotra",
 };
 
 const AGENCY_3 = {
   name: "Ramesh Kumar Cabs",
-  slug: "premium-rides-3",
+  slug: "ramesh-kumar",
   phoneNumber: "+91 9876543212",
-  aboutCompany: "Independent commercial driver with 10+ years of safe driving experience across national highways.",
+  aboutCompany: "Independent commercial driver with 10+ years of driving experience across national highways.",
   ownerName: "Ramesh Kumar",
 };
 
