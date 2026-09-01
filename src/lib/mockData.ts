@@ -1,44 +1,15 @@
 import { SearchResultItem, TravelSuggestion } from "@/types/models";
 import { v7 as uuidv7 } from "uuid";
 
-const MOCK_REVIEWS = [
-  {
-    id: "rev-1",
-    authorName: "Rahul Sharma",
-    rating: 5,
-    date: "2 days ago",
-    comment: "Driver was very punctual and the car was spotless clean. Highly recommended!",
-  },
-  {
-    id: "rev-2",
-    authorName: "Priya Patel",
-    rating: 5,
-    date: "1 week ago",
-    comment: "Smooth highway ride. AC was working great throughout the trip.",
-  },
-  {
-    id: "rev-3",
-    authorName: "Vikram Malhotra",
-    rating: 4,
-    date: "2 weeks ago",
-    comment: "Good experience overall. Driver knew all the short routes.",
-  },
-];
-
 const AGENCY_1 = {
   name: "Premium Rides & Travels",
   slug: "premium-rides-1",
   rating: 4.8,
   reviewsCount: 120,
   phoneNumber: "+91 9876543210",
-  whatsappNumber: "+919876543210",
-  aboutCompany: "Leading travel agency operating across Delhi NCR & North India. Specialized in outstation tours, airport drops, and luxury commercial fleets.",
-  ownerName: "Rajesh Sharma (Proprietor)",
-  isIndividualDriver: false,
-  yearsInBusiness: 8,
-  location: "Connaught Place, New Delhi",
-  services: ["Outstation Cabs", "Airport Pick & Drop", "24/7 Availability", "One Way Cab", "Local Hourly Rental"],
-  reviews: MOCK_REVIEWS,
+  aboutCompany: "Leading travel agency operating outstation tours, airport drops, and commercial fleets across India.",
+  ownerName: "Rajesh Sharma",
+  companyWebsite: "https://example.com",
 };
 
 const AGENCY_2 = {
@@ -47,14 +18,8 @@ const AGENCY_2 = {
   rating: 4.9,
   reviewsCount: 135,
   phoneNumber: "+91 9876543211",
-  whatsappNumber: "+919876543211",
-  aboutCompany: "FastTrack Cabs is your trusted partner for comfortable outstation trips and intercity transfers with verified drivers.",
+  aboutCompany: "FastTrack Cabs is your trusted partner for comfortable outstation trips and intercity transfers.",
   ownerName: "Vikram Malhotra",
-  isIndividualDriver: false,
-  yearsInBusiness: 5,
-  location: "Sector 18, Noida",
-  services: ["Outstation Trips", "Intercity Transfers", "Verified Chauffeurs", "Doorstep Pickup"],
-  reviews: MOCK_REVIEWS,
 };
 
 const AGENCY_3 = {
@@ -63,14 +28,8 @@ const AGENCY_3 = {
   rating: 5.0,
   reviewsCount: 150,
   phoneNumber: "+91 9876543212",
-  whatsappNumber: "+919876543212",
-  aboutCompany: "Independent commercial driver with 12+ years of safe driving experience across mountain routes and national highways.",
-  ownerName: "Ramesh Kumar (Owner / Driver)",
-  isIndividualDriver: true,
-  yearsInBusiness: 12,
-  location: "DLF Cyber City, Gurgaon",
-  services: ["Highway Outstation", "Mountain Driving Specialist", "Airport Pickup", "Personal Chauffeur"],
-  reviews: MOCK_REVIEWS,
+  aboutCompany: "Independent commercial driver with 10+ years of safe driving experience across national highways.",
+  ownerName: "Ramesh Kumar",
 };
 
 export const MOCK_SEARCH_RESULTS: SearchResultItem[] = [

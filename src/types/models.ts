@@ -1,24 +1,12 @@
 import { z } from "zod";
 
 export const SearchQuerySchema = z.object({
-  from: z
-    .string("Pickup location is required")
-    .min(1, "Pickup location cannot be empty"),
-  to: z
-    .string("Drop-off location is required")
-    .min(1, "Drop-off location cannot be empty"),
-  seats: z.int("Seats must be an integer").min(1, "Must need at least 1 seat"),
+  from: z.string("From location is required").min(1, "From location cannot be empty"),
+  to: z.string("To location is required").min(1, "To location cannot be empty"),
+  seats: z.number("Seats must be a number").int("Seats must be an integer").min(1, "At least 1 seat is required"),
   ac: z.boolean("AC preference is required").default(true),
-  date: z.date("Invalid date"),
   withDriver: z.boolean("Driver preference is required").default(true),
-});
-
-export const ReviewSchema = z.object({
-  id: z.string(),
-  authorName: z.string(),
-  rating: z.number().min(1).max(5),
-  date: z.string(),
-  comment: z.string(),
+  date: z.date("Date is required").default(() => new Date()),
 });
 
 export const AgencySchema = z
@@ -39,16 +27,10 @@ export const AgencySchema = z
       .min(0, "Reviews count cannot be negative"),
     phoneNumber: z.string().default("+91 9876543210"),
     aboutCompany: z.string().default("A trusted travel agency providing top-notch cabs."),
+    ownerName: z.string().optional(),
     companyWebsite: z.string().url().optional(),
     instagramProfile: z.string().url().optional(),
     logoImageUrl: z.string().url().optional(),
-    reviews: z.array(ReviewSchema).optional(),
-    ownerName: z.string().optional(),
-    isIndividualDriver: z.boolean().default(false),
-    yearsInBusiness: z.number().optional(),
-    location: z.string().optional(),
-    whatsappNumber: z.string().optional(),
-    services: z.array(z.string()).optional(),
   })
   .refine((data) => data.reviewsCount > 0 || data.rating === 0, {
     message: "Rating must be 0 if there are no reviews",
@@ -60,58 +42,37 @@ export const DriverSchema = z.object({
     .string("Driver name is required")
     .min(1, "Driver name cannot be empty"),
   imageUrl: z
-    .url("Invalid Image URL")
-    .default("https://api.dicebear.com/7.x/initials/svg?seed=DriverFallback"),
+    .string("Driver image URL is required")
+    .url("Invalid driver image URL format"),
 });
 
-export const CarSchema = z
-  .object({
-    id: z.uuidv7("Invalid id"),
-    brand: z.string("Brand is required").min(1, "Brand cannot be empty"),
-    model: z.string("Model is required").min(1, "Model cannot be empty"),
-    year: z
-      .int("Year must be an integer")
-      .min(1980, "Year must be at least 1980")
-      .max(new Date().getFullYear() + 1, "Year cannot exceed next year"),
-    seats: z
-      .int("Seats must be an integer")
-      .min(1, "Must have at least 1 seat")
-      .max(60, "Cannot exceed 60 seats"),
-    hasAc: z.boolean("AC status is required"),
-    withDriver: z.boolean("withDriver is required"),
-    withoutDriver: z.boolean("withoutDriver is required"),
-    imageUrls: z
-      .array(z.url("Invalid URL"))
-      .length(5, "Must provide exactly 5 images"),
-    agency: AgencySchema,
-    driver: DriverSchema.nullish().default(null),
-  })
-  .refine((data) => !data.withDriver || data.driver != null, {
-    message: "Driver details are required when withDriver is true",
-    path: ["driver"],
-  })
-  .refine(
-    (data) => !(data.withoutDriver && !data.withDriver) || data.driver == null,
-    {
-      message:
-        "Driver details must not be provided when only withoutDriver is available",
-      path: ["driver"],
-    },
-  );
-
-export const TravelSuggestionSchema = z.object({
-  fromLocation: z
-    .string("From location is required")
-    .min(1, "From location cannot be empty"),
-  toLocation: z
-    .string("To location is required")
-    .min(1, "To location cannot be empty"),
-  cars: z.array(CarSchema),
-  priceEstimate: z
-    .number("Price estimate must be a number")
-    .min(0, "Price estimate cannot be negative")
-    .nullish()
-    .default(null),
+export const CarSchema = z.object({
+  id: z
+    .string("Car ID is required")
+    .uuid("Invalid Car ID format"),
+  brand: z
+    .string("Brand is required")
+    .min(1, "Brand cannot be empty"),
+  model: z
+    .string("Model is required")
+    .min(1, "Model cannot be empty"),
+  year: z
+    .number("Year must be a number")
+    .int("Year must be an integer")
+    .min(2000, "Year must be 2000 or later")
+    .max(new Date().getFullYear() + 1, "Year cannot be in the future"),
+  seats: z
+    .number("Seats must be a number")
+    .int("Seats must be an integer")
+    .min(1, "At least 1 seat is required"),
+  hasAc: z.boolean("AC status is required").default(true),
+  withDriver: z.boolean("With driver status is required").default(true),
+  withoutDriver: z.boolean("Without driver status is required").default(false),
+  imageUrls: z
+    .array(z.string().url("Invalid image URL format"))
+    .min(1, "At least one image URL is required"),
+  agency: AgencySchema,
+  driver: DriverSchema.nullable().default(null),
 });
 
 export const SearchResultItemSchema = z.object({
@@ -121,8 +82,23 @@ export const SearchResultItemSchema = z.object({
     .min(0, "Journey price cannot be negative"),
 });
 
+export const TravelSuggestionSchema = z.object({
+  fromLocation: z
+    .string("From location is required")
+    .min(1, "From location cannot be empty"),
+  toLocation: z
+    .string("To location is required")
+    .min(1, "To location cannot be empty"),
+  priceEstimate: z
+    .number("Price estimate must be a number")
+    .min(0, "Price estimate cannot be negative")
+    .optional(),
+  cars: z.array(CarSchema).default([]),
+});
+
 export type SearchQuery = z.infer<typeof SearchQuerySchema>;
 export type Agency = z.infer<typeof AgencySchema>;
+export type Driver = z.infer<typeof DriverSchema>;
 export type Car = z.infer<typeof CarSchema>;
-export type TravelSuggestion = z.infer<typeof TravelSuggestionSchema>;
 export type SearchResultItem = z.infer<typeof SearchResultItemSchema>;
+export type TravelSuggestion = z.infer<typeof TravelSuggestionSchema>;
