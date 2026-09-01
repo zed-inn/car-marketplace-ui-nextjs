@@ -21,48 +21,48 @@ async function SearchResultsList({ queryParams }: { queryParams: string }) {
       {results.map((result) => (
         <article 
           key={result.car.id} 
-          className="bg-white border rounded-xl p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-5"
+          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-5"
         >
           <div className="flex gap-4 items-start w-full md:w-auto">
-            <div className="h-14 w-14 md:h-16 md:w-16 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-              <Car className="h-7 w-7 md:h-8 md:w-8 text-primary" />
+            <div className="h-14 w-14 md:h-16 md:w-16 bg-teal-50 dark:bg-teal-950/50 rounded-lg flex items-center justify-center shrink-0">
+              <Car className="h-7 w-7 md:h-8 md:w-8 text-teal-700 dark:text-teal-400" />
             </div>
             
             <div className="flex flex-col">
-              <h2 className="text-base md:text-lg font-bold text-foreground">
+              <h2 className="text-base md:text-lg font-bold text-slate-900 dark:text-slate-100">
                 {result.car.brand} {result.car.model}
               </h2>
               <div className="flex flex-wrap items-center gap-2 mt-1">
-                <span className="flex items-center gap-1 bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground"><Users className="h-3 w-3" /> {result.car.seats} Seats</span>
-                <span className="bg-muted px-2 py-0.5 rounded text-xs font-medium text-muted-foreground">{result.car.hasAc ? "AC" : "Non-AC"}</span>
-                <span className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs font-medium">
+                <span className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-xs font-medium text-slate-700 dark:text-slate-300"><Users className="h-3 w-3" /> {result.car.seats} Seats</span>
+                <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-xs font-medium text-slate-700 dark:text-slate-300">{result.car.hasAc ? "AC" : "Non-AC"}</span>
+                <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded text-xs font-medium">
                   <CheckCircle2 className="h-3 w-3" /> Commercial Cab
                 </span>
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 {result.car.driver ? (
                   <div className="flex items-center gap-1.5">
-                    <img src={result.car.driver.imageUrl} alt="Driver" className="h-5 w-5 rounded-full object-cover border" />
-                    <span className="text-xs font-medium">{result.car.driver.name}</span>
+                    <img src={result.car.driver.imageUrl} alt="Driver" className="h-5 w-5 rounded-full object-cover border dark:border-slate-700" />
+                    <span className="text-xs font-medium text-slate-800 dark:text-slate-200">{result.car.driver.name}</span>
                   </div>
                 ) : (
-                  <span className="text-xs font-medium italic text-muted-foreground">Driver pending</span>
+                  <span className="text-xs font-medium italic text-slate-400">Driver pending</span>
                 )}
-                <span className="text-xs font-semibold text-muted-foreground">({result.car.agency.name})</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">({result.car.agency.name})</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0">
+          <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-800">
             <div className="flex flex-col md:items-end">
-              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Total Fare</span>
-              <div className="text-xl font-bold text-foreground">
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Total Fare</span>
+              <div className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 ₹{(result.journeyPrice * 80).toFixed(0)}
               </div>
             </div>
             <Link 
               href={`/${result.car.agency.slug}?carId=${result.car.id}`}
-              className={buttonVariants({ className: "md:mt-2 bg-orange-600 hover:bg-orange-700 text-white font-bold px-5 shadow-sm" })}
+              className={buttonVariants({ className: "md:mt-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-500 text-white font-bold px-5 shadow-sm" })}
             >
               Book Now
             </Link>
@@ -112,13 +112,13 @@ export default async function SearchResultsPage({
   }).toString();
 
   return (
-    <main className="flex flex-col items-center min-h-screen py-8 px-4 md:px-8">
+    <main className="flex flex-col items-center min-h-screen py-8 px-4 md:px-8 bg-slate-50 dark:bg-slate-950 transition-colors">
       <div className="w-full max-w-4xl flex flex-col gap-6">
-        <section className="bg-white border rounded-xl shadow-sm p-4 md:p-6">
+        <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm p-4 md:p-6 transition-colors">
           <SearchForm initialData={searchData} isSearchPage={true} />
         </section>
 
-        <h1 className="text-xl font-bold text-foreground mt-2">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-2">
           Available Cabs
         </h1>
 

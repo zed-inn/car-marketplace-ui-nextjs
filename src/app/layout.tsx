@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const roboto = Roboto({ 
   subsets: ["latin"], 
@@ -19,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${roboto.variable} font-sans min-h-screen flex flex-col bg-background text-foreground`}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${roboto.variable} font-sans min-h-screen flex flex-col bg-background text-foreground transition-colors duration-200`}>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
