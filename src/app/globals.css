@@ -30,6 +30,24 @@
   --radius-sm: calc(var(--radius-md) - 2px);
 }
 
+.dark {
+  --color-background: oklch(0.14 0.015 255.589);
+  --color-foreground: oklch(0.98 0 0);
+  
+  --color-card: oklch(0.18 0.015 255.589);
+  --color-card-foreground: oklch(0.98 0 0);
+  --color-popover: oklch(0.18 0.015 255.589);
+  --color-popover-foreground: oklch(0.98 0 0);
+  --color-secondary: oklch(0.22 0.01 255.589);
+  --color-secondary-foreground: oklch(0.98 0 0);
+  --color-muted: oklch(0.22 0.01 255.589);
+  --color-muted-foreground: oklch(0.70 0.01 255.589);
+  --color-accent: oklch(0.25 0.01 255.589);
+  --color-accent-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.28 0.01 255.589);
+  --color-input: oklch(0.28 0.01 255.589);
+}
+
 @layer base {
   html {
     overflow-y: scroll;
@@ -38,7 +56,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased transition-colors duration-200;
     scrollbar-gutter: stable;
   }
 }
