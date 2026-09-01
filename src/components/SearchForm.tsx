@@ -19,7 +19,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -76,22 +75,30 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-2 sm:gap-3"
+        className="w-full flex flex-col gap-1.5 sm:gap-3"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-4">
           <FormField
             control={form.control}
             name="from"
-            render={({ field }) => (
-              <FormItem className="space-y-1">
-                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">From</FormLabel>
+            render={({ field, fieldState }) => (
+              <FormItem className="space-y-0.5">
+                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide flex items-center justify-between">
+                  <span>From</span>
+                  {fieldState.error && (
+                    <span className="text-destructive font-bold lowercase text-[10px] sm:text-xs">({fieldState.error.message})</span>
+                  )}
+                </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                    <Input placeholder="Pickup city" className="pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg" {...field} />
+                    <Input 
+                      placeholder="Pickup city" 
+                      className={cn("pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg", fieldState.error && "border-destructive focus-visible:ring-destructive")} 
+                      {...field} 
+                    />
                   </div>
                 </FormControl>
-                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -99,28 +106,41 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
           <FormField
             control={form.control}
             name="to"
-            render={({ field }) => (
-              <FormItem className="space-y-1">
-                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">To</FormLabel>
+            render={({ field, fieldState }) => (
+              <FormItem className="space-y-0.5">
+                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide flex items-center justify-between">
+                  <span>To</span>
+                  {fieldState.error && (
+                    <span className="text-destructive font-bold lowercase text-[10px] sm:text-xs">({fieldState.error.message})</span>
+                  )}
+                </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                    <Input placeholder="Drop-off city" className="pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg" {...field} />
+                    <Input 
+                      placeholder="Drop-off city" 
+                      className={cn("pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg", fieldState.error && "border-destructive focus-visible:ring-destructive")} 
+                      {...field} 
+                    />
                   </div>
                 </FormControl>
-                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 items-end">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-3 items-end">
           <FormField
             control={form.control}
             name="date"
-            render={({ field }) => (
-              <FormItem className="space-y-1 col-span-2 sm:col-span-1">
-                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Date</FormLabel>
+            render={({ field, fieldState }) => (
+              <FormItem className="space-y-0.5 col-span-2 sm:col-span-1">
+                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide flex items-center justify-between">
+                  <span>Date</span>
+                  {fieldState.error && (
+                    <span className="text-destructive font-bold lowercase text-[10px] sm:text-xs">({fieldState.error.message})</span>
+                  )}
+                </FormLabel>
                 <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                   <FormControl>
                     <PopoverTrigger
@@ -128,7 +148,8 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                       className={cn(
                         buttonVariants({ variant: "outline" }),
                         "w-full pl-2.5 sm:pl-3 text-left font-normal h-9 sm:h-11 text-xs sm:text-sm rounded-lg justify-start",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
+                        fieldState.error && "border-destructive"
                       )}
                     >
                       <CalendarIcon className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
@@ -147,7 +168,6 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -155,22 +175,26 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
           <FormField
             control={form.control}
             name="seats"
-            render={({ field }) => (
-              <FormItem className="space-y-1">
-                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Seats</FormLabel>
+            render={({ field, fieldState }) => (
+              <FormItem className="space-y-0.5">
+                <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide flex items-center justify-between">
+                  <span>Seats</span>
+                  {fieldState.error && (
+                    <span className="text-destructive font-bold lowercase text-[10px] sm:text-xs">({fieldState.error.message})</span>
+                  )}
+                </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <Input 
                       type="number" 
                       min={1} 
-                      className="pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg" 
+                      className={cn("pl-8 sm:pl-9 h-9 sm:h-11 text-xs sm:text-sm rounded-lg", fieldState.error && "border-destructive focus-visible:ring-destructive")} 
                       {...field} 
                       onChange={e => field.onChange(parseInt(e.target.value) || 0)} 
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
               </FormItem>
             )}
           />
@@ -180,7 +204,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
               control={form.control}
               name="ac"
               render={({ field }) => (
-                <FormItem className="space-y-1">
+                <FormItem className="space-y-0.5">
                   <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">AC</FormLabel>
                   <FormControl>
                     <label 
@@ -190,7 +214,6 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                       <span className="text-xs sm:text-sm font-semibold select-none text-foreground">AC</span>
                     </label>
                   </FormControl>
-                  <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
                 </FormItem>
               )}
             />
@@ -199,7 +222,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
               control={form.control}
               name="withDriver"
               render={({ field }) => (
-                <FormItem className="space-y-1">
+                <FormItem className="space-y-0.5">
                   <FormLabel className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Driver</FormLabel>
                   <FormControl>
                     <label 
@@ -209,7 +232,6 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
                       <span className="text-xs sm:text-sm font-semibold select-none text-foreground">Driver</span>
                     </label>
                   </FormControl>
-                  <FormMessage className="text-[10px] sm:text-xs font-medium text-destructive mt-0.5" />
                 </FormItem>
               )}
             />
@@ -219,7 +241,7 @@ export function SearchForm({ initialData, isSearchPage }: { initialData?: Partia
         <Button 
           type="submit" 
           disabled={isLoading} 
-          className="w-full h-10 sm:h-12 mt-1 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-base rounded-lg shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
+          className="w-full h-10 sm:h-12 mt-0.5 sm:mt-1 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-base rounded-lg shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
         >
           {isLoading ? (
             <>

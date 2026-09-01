@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const SearchQuerySchema = z.object({
-  from: z.string("From location is required").min(1, "From location cannot be empty"),
-  to: z.string("To location is required").min(1, "To location cannot be empty"),
-  seats: z.number("Seats must be a number").int("Seats must be an integer").min(1, "At least 1 seat is required"),
-  ac: z.boolean("AC preference is required").default(true),
-  withDriver: z.boolean("Driver preference is required").default(true),
-  date: z.date("Date is required").default(() => new Date()),
+  from: z.string().min(1, "Required"),
+  to: z.string().min(1, "Required"),
+  seats: z.number().int().min(1, "> 0"),
+  ac: z.boolean().default(true),
+  withDriver: z.boolean().default(true),
+  date: z.date().default(() => new Date()),
 });
 
 export const AgencySchema = z.object({
