@@ -1,22 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { env } from "@/lib/env";
-import { z } from "zod";
-import { TravelSuggestionSchema } from "@/types/models";
-import { CACHE_REVALIDATE_SECONDS_DEFAULT } from "@/lib/constants";
+import { getSuggestions } from "@/lib/services/dataService";
 
 export async function SuggestionBox() {
-  const res = await fetch(`${env.APP_URL}/api/suggestions`, {
-    next: { revalidate: CACHE_REVALIDATE_SECONDS_DEFAULT },
-  });
-  
-  if (!res.ok) {
-    throw new Error("Failed to fetch suggestions");
-  }
-  
-  const data = await res.json();
-  const suggestions = z.array(TravelSuggestionSchema).parse(data);
+  const suggestions = await getSuggestions();
 
   return (
     <section className="w-full flex flex-col gap-4">

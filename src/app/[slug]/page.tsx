@@ -8,6 +8,7 @@ import { env } from "@/lib/env";
 import { AgencySchema, SearchResultItemSchema } from "@/types/models";
 import { CACHE_REVALIDATE_SECONDS_DEFAULT } from "@/lib/constants";
 import { CallAgencyButton } from "@/components/CallAgencyButton";
+import { getAgencyData } from "@/lib/services/dataService";
 import { z } from "zod";
 
 const AgencyPageResponseSchema = z.object({
@@ -26,17 +27,13 @@ export default async function AgencyPage({
   const { slug } = await params;
   const { carId } = await searchParams;
 
-  const res = await fetch(`${env.APP_URL}/api/agency/${slug}${carId ? `?carId=${carId}` : ""}`, {
-    next: { revalidate: CACHE_REVALIDATE_SECONDS_DEFAULT },
-  });
+  const data = await getAgencyData(slug, carId);
 
-  if (!res.ok) {
+  if (!data) {
     return notFound();
   }
 
-  const data = await res.json();
-  const parsedData = AgencyPageResponseSchema.parse(data);
-  const { agency, requestedCar, otherCars } = parsedData;
+  const { agency, requestedCar, otherCars } = data;
   const { car, journeyPrice } = requestedCar;
 
   return (

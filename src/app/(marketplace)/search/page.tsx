@@ -5,25 +5,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { SearchForm } from "@/components/SearchForm";
 import { SearchSkeleton } from "@/components/SearchSkeleton";
 import { SearchLoadedNotifier } from "@/components/SearchLoadedNotifier";
-import { env } from "@/lib/env";
-import { SearchQuerySchema, SearchResultItemSchema, type SearchQuery } from "@/types/models";
-import { z } from "zod";
-import { CACHE_REVALIDATE_SECONDS_DEFAULT, LABOR_ILLUSION_DELAY_MS } from "@/lib/constants";
+import { SearchQuerySchema, type SearchQuery } from "@/types/models";
+import { LABOR_ILLUSION_DELAY_MS } from "@/lib/constants";
+import { getSearchResults } from "@/lib/services/dataService";
 
 async function SearchResultsList({ queryParams }: { queryParams: string }) {
-  const [res] = await Promise.all([
-    fetch(`${env.APP_URL}/api/search?${queryParams}`, {
-      next: { revalidate: CACHE_REVALIDATE_SECONDS_DEFAULT },
-    }),
+  const [results] = await Promise.all([
+    getSearchResults(),
     new Promise((resolve) => setTimeout(resolve, LABOR_ILLUSION_DELAY_MS)),
   ]);
-  
-  if (!res.ok) {
-    throw new Error("Failed to fetch search results");
-  }
-  
-  const data = await res.json();
-  const results = z.array(SearchResultItemSchema).parse(data);
 
   return (
     <section className="flex flex-col gap-3">
